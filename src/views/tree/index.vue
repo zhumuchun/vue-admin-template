@@ -2,7 +2,7 @@
   <div class="components-container">
     <split-pane split="vertical" :default-percent="30">
       <template slot="paneL">
-        <el-card class="left-container">
+        <div class="left-container">
           <el-input
             v-model="filterText"
             placeholder="keyword"
@@ -18,8 +18,9 @@
             :filter-node-method="filterNode"
             :data="treeData"
             :props="props"
-          ></vue-easy-tree>
-        </el-card>
+            style="margin-left: 10px"
+          />
+        </div>
       </template>
       <template slot="paneR">
         <div class="right-container" >{{checkedData}}</div>
