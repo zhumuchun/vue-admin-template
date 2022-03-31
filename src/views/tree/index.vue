@@ -1,78 +1,120 @@
 <template>
-  <div class="app-container">
-    <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom:30px;" />
-
-    <el-tree
-      ref="tree2"
-      :data="data2"
-      :props="defaultProps"
-      :filter-node-method="filterNode"
-      class="filter-tree"
-      default-expand-all
-    />
-
+  <div class="components-container">
+    <split-pane split="vertical" :default-percent="30">
+      <template slot="paneL">
+        <el-card class="left-container">
+          <el-input
+            v-model="filterText"
+            placeholder="keyword"
+            class="filter-input"
+          />
+          <vue-easy-tree
+            ref="veTree"
+            node-key="id"
+            height="calc(100vh - 110px)"
+            highlight-current
+            @node-click="handleNodeClick"
+            :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            :data="treeData"
+            :props="props"
+          ></vue-easy-tree>
+        </el-card>
+      </template>
+      <template slot="paneR">
+        <div class="right-container" >{{checkedData}}</div>
+      </template>
+    </split-pane>
   </div>
 </template>
 
 <script>
-export default {
-
-  data() {
-    return {
-      filterText: '',
-      data2: [{
-        id: 1,
-        label: 'Level one 1',
-        children: [{
-          id: 4,
-          label: 'Level two 1-1',
-          children: [{
-            id: 9,
-            label: 'Level three 1-1-1'
-          }, {
-            id: 10,
-            label: 'Level three 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: 'Level one 2',
-        children: [{
-          id: 5,
-          label: 'Level two 2-1'
-        }, {
-          id: 6,
-          label: 'Level two 2-2'
-        }]
-      }, {
-        id: 3,
-        label: 'Level one 3',
-        children: [{
-          id: 7,
-          label: 'Level two 3-1'
-        }, {
-          id: 8,
-          label: 'Level two 3-2'
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
+  import VueEasyTree from "@wchbrad/vue-easy-tree";
+  import SplitPane from 'vue-splitpane'
+  export default {
+    components: {
+      VueEasyTree,
+      SplitPane,
+    },
+    data() {
+      return {
+        filterText: '',
+        props: {
+          label: "name",
+          children: "children"
+        },
+        treeData: [],
+        checkedData: {},
+      };
+    },
+    created() {
+      const data = [],
+        root = 8,
+        children = 5,
+        base = 1000;
+      for (let i = 0; i < root; i++) {
+        data.push({
+          id: `${i}`,
+          name: `test-${i}`,
+          children: []
+        });
+        for (let j = 0; j < children; j++) {
+          data[i].children.push({
+            id: `${i}-${j}`,
+            name: `test-${i}-${j}`,
+            children: []
+          });
+          for (let k = 0; k < base; k++) {
+            data[i].children[j].children.push({
+              id: `${i}-${j}-${k}`,
+              name: `test-${i}-${j}-${k}`
+            });
+          }
+        }
       }
-    }
-  },
-  watch: {
-    filterText(val) {
-      this.$refs.tree2.filter(val)
-    }
-  },
+      this.treeData = data;
+    },
 
-  methods: {
-    filterNode(value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
+    watch: {
+      filterText(val) {
+        this.$refs.veTree.filter(val)
+      }
+    },
+
+    methods: {
+      filterNode(value, data) {
+        if (!value) return true
+        return data.name.indexOf(value) !== -1
+      },
+      handleNodeClick(data) {
+        this.checkedData = JSON.stringify(data, null, 4);
+      },
     }
-  }
-}
+  };
 </script>
 
+<style  scoped>
+  .components-container {
+    position: relative;
+    height: calc(100vh - 50px);
+  }
+
+  .filter-input {
+    padding: 10px;
+  }
+
+  .filter-input>>>.el-input__inner {
+    border-radius: 30px;
+  }
+
+  .left-container {
+    height: 100%;
+  }
+
+  .right-container {
+    background-color: #FCE38A;
+    height: 100%;
+    white-space: pre;
+    overflow: auto;
+  }
+</style>
