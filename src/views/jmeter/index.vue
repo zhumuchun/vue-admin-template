@@ -951,7 +951,7 @@ export default {
       return filteredOptions
     },
 
-    handleTreeNodeRightClick(event, data, node, component) {
+    handleTreeNodeRightClick(event, data) {
       event.preventDefault();
       this.checkedData = data;
       this.contextMenuOptions = []
