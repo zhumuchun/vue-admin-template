@@ -132,10 +132,16 @@
                       <el-form-item label-width="0px">
                         <el-radio-group v-model="checkedData['ThreadGroup.on_sample_error']">
                           <el-radio
-                            v-for="choice in ['continue', 'startnextloop','stopthread', 'stoptest', 'stoptestnow']"
-                            :label="choice"
-                            :key="choice">
-                            {{ choice }}
+                            v-for="choice in [
+                              {label:'继续', value:'continue'},
+                              {label:'启动下一进程循环',value:'startnextloop'},
+                              {label:'停止线程', value:'stopthread'},
+                              {label:'停止测试', value: 'stoptest'},
+                              {label: '立即停止测试',value: 'stoptestnow'}
+                            ]"
+                            :label="choice.value"
+                            :key="choice.value">
+                            {{ choice.label }}
                           </el-radio>
                         </el-radio-group>
                       </el-form-item>
