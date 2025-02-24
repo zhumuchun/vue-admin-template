@@ -149,12 +149,16 @@
                       </el-form-item>
                       <div style="display:flex">
                         <el-form-item label="循环次数" label-width="58px">
-                          <el-checkbox v-model="checkedData['ThreadGroup.main_controller.continue_forever']">永远
+                          <el-checkbox
+                            v-model="checkedData['ThreadGroup.main_controller']['LoopController.continue_forever']"
+                          >永远
                           </el-checkbox>
                         </el-form-item>
                         <el-form-item label-width="10px">
-                          <el-input-number v-model="checkedData['ThreadGroup.main_controller.loops']"
-                                           controls-position="right"/>
+                          <el-input-number
+                            v-model="checkedData['ThreadGroup.main_controller']['LoopController.loops']"
+                            controls-position="right"
+                          />
                         </el-form-item>
                       </div>
                       <el-form-item>
@@ -552,15 +556,20 @@
                     </el-card>
                   </div>
                   <div v-if="checkedData.attributes.guiclass==='JSONPostProcessorGui'">
-                    <label-border title="应用于" style="margin-bottom: 10px">
+                    <label-border title="应用于" :bottom-padding="0">
                       <div style="display: flex">
                         <el-form-item label-width="0px">
                           <el-radio-group v-model="checkedData['Sample.scope']">
                             <el-radio
-                              v-for="choice in ['all', 'parent', 'children', 'variable']"
-                              :label="choice"
-                              :key="choice">
-                              {{ choice }}
+                              v-for="choice in [
+                                {label:'Main samples and Sub-samples',value:'all'},
+                                {label:'Main samples only',value: undefined},
+                                {label:'Sub-samples only',value:'children' },
+                                {label:'JMeter variables Name to use',value:'variable'}
+                              ]"
+                              :label="choice.value"
+                              :key="choice.value">
+                              {{ choice.label }}
                             </el-radio>
                           </el-radio-group>
                         </el-form-item>
