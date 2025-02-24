@@ -1011,7 +1011,7 @@ export default {
         case '启用':
         case '禁用':
         case '切换':
-          this.checkedData.attributes.enabled = String(this.checkedData.attributes.enabled === 'false')
+          this.$set(this.checkedData.attributes, 'enabled', String(this.checkedData.attributes.enabled === 'false'))
       }
       console.log('handleContextMenuClick', value, this.checkedData.attributes.enabled)
     },
