@@ -73,6 +73,12 @@ export const constantRoutes = [
         name: 'Tree',
         component: () => import('@/views/tree/index'),
         meta: { title: 'Tree', icon: 'tree' }
+      },
+      {
+        path: 'jmeter',
+        name: 'Jmeter',
+        component: () => import('@/views/jmeter/index'),
+        meta: { title: 'Jmeter', icon: 'tree' }
       }
     ]
   },
