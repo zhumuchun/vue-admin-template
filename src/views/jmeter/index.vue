@@ -38,7 +38,7 @@
               >
                 <span slot-scope="{ node, data }">
                   <span :style="{opacity: data.attributes.enabled === 'false'?0.5:1}">
-                    <i :class="elementIcons[data.attributes.testclass]" style="margin-right: 5px"></i>
+                    <i :class="elementIcons[data.attributes.testclass]" style="margin-right: 5px"/>
                     <span>{{ node.label }}</span>
                   </span>
                 </span>
@@ -63,7 +63,7 @@
           <div class="right-container">
             <div v-if="checkedData.attributes.testname!==undefined">
               <el-card :header="checkedData.attributes.testclass" shadow="never">
-                <el-form ref="form" :model="checkedData" label-width="120px" label-position='left' size="small">
+                <el-form ref="form" :model="checkedData" label-width="120px" label-position="left" size="small">
                   <el-form-item label="名称">
                     <el-input v-model="checkedData.attributes.testname"/>
                   </el-form-item>
@@ -580,8 +580,10 @@
                           </el-radio-group>
                         </el-form-item>
                         <el-form-item label-width="10px" width="100%">
-                          <el-input v-model="checkedData['Scope.variable']"
-                                    :disabled="checkedData['Sample.scope'] !== 'variable'"/>
+                          <el-input
+                            v-model="checkedData['Scope.variable']"
+                            :disabled="checkedData['Sample.scope'] !== 'variable'"
+                          />
                         </el-form-item>
                       </div>
                     </label-border>
@@ -750,116 +752,6 @@ const AddContextMenuOptions = [
     ]
   }
 ]
-
-
-const fullContextMenuOptions = [
-  {
-    label: '添加',
-    children: [
-      {
-        label: '线程（用户）',
-        children: [
-          {
-            label: 'setUp线程组',
-            match: ['TestPlan'],
-          },
-          {
-            label: 'tearDown线程组',
-            match: ['TestPlan'],
-          },
-          {
-            label: '线程组',
-            match: ['TestPlan'],
-          },
-        ],
-      },
-      {
-        label: '配置元件',
-        children: [
-          {
-            label: 'CSV Data Set Config',
-            match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
-          },
-          {
-            label: 'HTTP信息头管理器',
-            match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
-          },
-          {
-            label: 'HTTP Cookie管理器',
-            match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
-          },
-          {
-            label: 'HTTP缓存管理器',
-            match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
-          },
-          {
-            label: 'HTTP请求默认值',
-            match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
-          }
-        ],
-      },
-      {
-        label: '监听器',
-        children: [
-          {
-            label: '查看结果树',
-            match: ['TestPlan']
-          }
-        ]
-      },
-      {
-        label: '取样器',
-        children: [
-          {
-            label: 'HTTP请求',
-            match: ['ThreadGroup']
-          },
-          {
-            label: 'Debug Sampler',
-            match: ['ThreadGroup']
-          },
-          {
-            label: 'HTTP请求',
-            match: ['ThreadGroup']
-          }
-        ]
-      }
-    ],
-  },
-  {
-    label: '剪切',
-    match: 'ALL',
-  },
-  {
-    label: '复制',
-    match: 'ALL',
-  },
-  {
-    label: '粘贴',
-    match: 'ALL',
-  },
-  {
-    label: '复写',
-    match: 'ALL',
-  },
-  {
-    label: '删除',
-    match: 'ALL',
-  },
-  {
-    label: '启用',
-    match: 'ALL',
-  },
-  {
-    label: '禁用',
-    match: 'ALL',
-  },
-  {
-    label: '切换',
-    match: 'ALL',
-  },
-]
-
 
 export default {
   components: {
@@ -1055,7 +947,6 @@ export default {
           this.$set(this.checkedData.attributes, 'enabled', String(this.checkedData.attributes.enabled === 'false'))
           break;
       }
-      console.log('handleContextMenuClick', value, this.checkedData.attributes.enabled)
     },
 
     handleArgumentsSelectionChange(val) {
