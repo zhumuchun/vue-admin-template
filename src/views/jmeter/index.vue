@@ -895,6 +895,10 @@ export default {
         JSR223PreProcessor: 'el-icon-document',
         ConfigTestElement: 'el-icon-s-operation',
       },
+
+      currentNode: null,
+      clipboard: null,
+
     }
   },
 
@@ -966,8 +970,9 @@ export default {
       return filteredOptions
     },
 
-    handleTreeNodeRightClick(event, data) {
+    handleTreeNodeRightClick(event, data, node) {
       event.preventDefault();
+      this.currentNode = node;
       this.checkedData = data;
       this.contextMenuOptions = []
       let AddOptions = JSON.parse(JSON.stringify(AddContextMenuOptions))
@@ -978,9 +983,13 @@ export default {
           children: AddOptions,
         })
       }
-      ['剪切', '复制', '粘贴', '复写', '删除'].forEach(item => this.contextMenuOptions.push({
-        label: item,
-      }))
+      if (this.checkedData.attributes.guiclass === 'TestPlanGui') {
+        this.contextMenuOptions.push({label: '粘贴'})
+      } else {
+        ['剪切', '复制', '粘贴', '复写', '删除'].forEach(item => this.contextMenuOptions.push({
+          label: item,
+        }))
+      }
       this.contextMenuOptions.push.apply(this.contextMenuOptions, [{
         label: '启用',
         disabled: this.checkedData.attributes.enabled !== 'false',
@@ -1008,10 +1017,43 @@ export default {
       }
       this.contextMenuVisible = false
       switch (value[0]) {
+        case '剪切':
+          if (this.currentNode !== null) {
+            const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id);
+            this.clipboard = this.currentNode.parent.data.hashTree.splice(index, 1)[0];
+            this.checkedData = this.treeData[0];
+            this.currentNode = null;
+          }
+          break;
+        case '复制':
+          if (this.currentNode !== null) {
+            this.clipboard = this.checkedData;
+          }
+          break;
+        case '粘贴':
+          if (this.clipboard !== null) {
+            this.checkedData.hashTree.push(this.clipboard)
+            this.currentNode.data.hashTree = JSON.parse(JSON.stringify(this.checkedData.hashTree))
+          }
+          break;
+        case '复写':
+          const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id);
+          this.currentNode.parent.data.hashTree.splice(index, 0, this.checkedData)
+          this.currentNode.parent.data.hashTree = JSON.parse(JSON.stringify(this.currentNode.parent.data.hashTree))
+          break;
+        case '删除':
+          if (this.currentNode !== null) {
+            const index = this.currentNode.parent.childNodes.findIndex(child => child.isCurrent);
+            this.currentNode.parent.data.hashTree.splice(index, 1);
+            this.checkedData = this.treeData[0];
+            this.currentNode = null;
+          }
+          break;
         case '启用':
         case '禁用':
         case '切换':
           this.$set(this.checkedData.attributes, 'enabled', String(this.checkedData.attributes.enabled === 'false'))
+          break;
       }
       console.log('handleContextMenuClick', value, this.checkedData.attributes.enabled)
     },
