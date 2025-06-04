@@ -1,24 +1,212 @@
 <template>
   <div @click="handleToJmx">
-    <div>
-      <el-upload
-        class="upload-demo"
-        action=""
-        :on-change="handleFileUpload"
-        :auto-upload="false"
-      >
-        <el-button size="small" type="primary">点击上传</el-button>
-      </el-upload>
+    <div class="toolbar">
+      <el-tooltip effect="light" content="新建" placement="bottom-start" :open-delay="3000">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/document-new-4.png"
+            alt="新建"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="打开" placement="bottom-start" :open-delay="3000">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/document-open-2.png"
+            alt="打开"
+            class="toolbar-button-icon"
+            @click="handleOpen"
+          >
+          <input
+            ref="fileInput"
+            type="file"
+            style="display: none"
+            accept=".jmx"
+            @change="handleChange"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="保存" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/document-save-5.png"
+            alt="保存"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="另存为" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/document-save-as-5.png"
+            alt="另存为"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-divider direction="vertical"/>
+      <el-tooltip effect="light" content="剪切" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/edit-cut-4.png"
+            alt="剪切"
+            class="toolbar-button-icon"
+            @click="handleCut"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="复制" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/edit-copy-4.png"
+            alt="复制"
+            class="toolbar-button-icon"
+            @click="handleCopy"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="粘贴" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/edit-paste-4.png"
+            alt="粘贴"
+            class="toolbar-button-icon"
+            @click="handlePaste"
+          >
+        </button>
+      </el-tooltip>
+      <el-divider direction="vertical"/>
+      <el-tooltip effect="light" content="全部展开" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/list-add-3.png"
+            alt="全部展开"
+            class="toolbar-button-icon"
+            @click="handleExpandAll"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="全部折叠" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/list-remove-3.png"
+            alt="全部折叠"
+            class="toolbar-button-icon"
+            @click="HandleCollapseAll"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="切换" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/color-picker-toggle.png"
+            alt="切换"
+            class="toolbar-button-icon"
+            @click="handleSwitch"
+          >
+        </button>
+      </el-tooltip>
+      <el-divider direction="vertical"/>
+      <el-tooltip effect="light" content="启动" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/arrow-right-3.png"
+            alt="启动"
+            :class="{'toolbar-button-icon':true, 'inactive': isRunning}"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="不停顿启动" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/arrow-right-3-notimer.png"
+            alt="不停顿启动"
+            :class="{'toolbar-button-icon':true, 'inactive': isRunning}"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="停止" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/road-sign-us-stop.png"
+            alt="停止"
+            :class="{'toolbar-button-icon':true, 'inactive': !isRunning}"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="关闭" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/process-stop-4.png"
+            alt="关闭"
+            :class="{'toolbar-button-icon':true, 'inactive': !isRunning}"
+          >
+        </button>
+      </el-tooltip>
+      <el-divider direction="vertical"/>
+      <el-tooltip effect="light" content="清除" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/run-build-clean.png"
+            alt="清除"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="清除全部" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/run-build-prune.png"
+            alt="清除全部"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-divider direction="vertical"/>
+      <el-tooltip effect="light" content="查找" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/edit-find-7.png"
+            alt="查找"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="重置搜索" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/edit-clear-3.png"
+            alt="重置搜索"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-divider direction="vertical"/>
+      <el-tooltip effect="light" content="函数助手对话框" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/documentation.png"
+            alt="函数助手对话框"
+            class="toolbar-button-icon"
+          >
+        </button>
+      </el-tooltip>
+      <el-tooltip effect="light" content="帮助" placement="bottom-start">
+        <button class="toolbar-button">
+          <img
+            src="@/assets/jmeter/toolbar/48x48/help-contents-5.png"
+            alt="帮助"
+            class="toolbar-button-icon"
+            @click="onClickHelp"
+          >
+        </button>
+      </el-tooltip>
     </div>
     <div class="components-container">
       <split-pane split="vertical" :default-percent="30">
         <template slot="paneL">
           <div class="left-container">
-            <el-input
-              v-model="filterText"
-              placeholder="keyword"
-              class="filter-input"
-            />
             <div style="overflow: scroll;margin-bottom: 10px;height: 100%">
               <el-tree
                 ref="veTree"
@@ -36,10 +224,13 @@
                 @node-expand="contextMenuVisible=false"
                 @node-collapse="contextMenuVisible=false"
               >
-                <span slot-scope="{ node, data }">
-                  <span :style="{opacity: data.attributes.enabled === 'false'?0.5:1}">
-                    <i :class="elementIcons[data.attributes.testclass]" style="margin-right: 5px"/>
-                    <span>{{ node.label }}</span>
+                <span slot-scope="{ node, data }" style="height: 100%">
+                  <span :style="{opacity: data.attributes.enabled === 'false'?0.5:1, fontsize: '12px'}">
+                    <img
+                      :src="getElementImage(data.attributes.testclass)"
+                      alt="测试计划"
+                      style="height: 80%;vertical-align:sub; margin-right: 5px"
+                    >{{ node.label }}
                   </span>
                 </span>
               </el-tree>
@@ -77,13 +268,13 @@
                         :data="checkedData['TestPlan.user_defined_variables']['Arguments.arguments']"
                         size="mini"
                         style="width: 100%"
-                        @selection-change="handleArgumentsSelectionChange"
                         class="arguments-table"
+                        @selection-change="handleArgumentsSelectionChange"
                       >
                         <el-table-column
                           type="selection"
-                          width="55">
-                        </el-table-column>
+                          width="55"
+                        />
                         <el-table-column
                           prop="name"
                           label="名称"
@@ -111,16 +302,16 @@
                       <div style="margin-top: 20px; text-align: center">
                         <el-button
                           type="primary"
-                          @click="handleArgumentsAdd(checkedData['TestPlan.user_defined_variables']['Arguments.arguments'], 'Argument')"
                           size="mini"
+                          @click="handleArgumentsAdd(checkedData['TestPlan.user_defined_variables']['Arguments.arguments'], 'Argument')"
                         >
                           添加
                         </el-button>
                         <el-button
                           :disabled="argumentsSelection.length===0"
                           type="primary"
-                          @click="handleArgumentsDelete(checkedData['TestPlan.user_defined_variables']['Arguments.arguments'], 'Argument')"
                           size="mini"
+                          @click="handleArgumentsDelete(checkedData['TestPlan.user_defined_variables']['Arguments.arguments'], 'Argument')"
                         >
                           删除
                         </el-button>
@@ -139,8 +330,9 @@
                               {label:'停止测试', value: 'stoptest'},
                               {label: '立即停止测试',value: 'stoptestnow'}
                             ]"
+                            :key="choice.value"
                             :label="choice.value"
-                            :key="choice.value">
+                          >
                             {{ choice.label }}
                           </el-radio>
                         </el-radio-group>
@@ -187,15 +379,17 @@
                       </el-form-item>
                       <el-form-item label="持续时间(秒)">
                         <el-input-number
-                          :disabled="!checkedData['ThreadGroup.scheduler']"
                           v-model="checkedData['ThreadGroup.ramp_time']"
-                          controls-position="right"/>
+                          :disabled="!checkedData['ThreadGroup.scheduler']"
+                          controls-position="right"
+                        />
                       </el-form-item>
                       <el-form-item label="启动延迟(秒)">
                         <el-input-number
-                          :disabled="!checkedData['ThreadGroup.scheduler']"
                           v-model="checkedData['ThreadGroup.ramp_time']"
-                          controls-position="right"/>
+                          :disabled="!checkedData['ThreadGroup.scheduler']"
+                          controls-position="right"
+                        />
                       </el-form-item>
                     </label-border>
                   </div>
@@ -211,8 +405,8 @@
                                     v-for="item in ['http', 'https']"
                                     :key="item"
                                     :label="item"
-                                    :value="item">
-                                  </el-option>
+                                    :value="item"
+                                  />
                                 </el-select>
                               </el-form-item>
                             </el-col>
@@ -237,8 +431,8 @@
                                     v-for="item in ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']"
                                     :key="item"
                                     :label="item"
-                                    :value="item">
-                                  </el-option>
+                                    :value="item"
+                                  />
                                 </el-select>
                               </el-form-item>
                             </el-col>
@@ -266,15 +460,16 @@
                           </el-checkbox>
                           <el-tabs
                             :value="activeName"
-                            @tab-click="handleTabClick"
                             type="border-card"
                             style="border: 0; margin-top: 20px"
+                            @tab-click="handleTabClick"
                           >
                             <el-tab-pane
                               label="参数"
                               name="args"
                               :disabled="checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length===1 &&
-                                ['', undefined].includes(checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name']) &&
+                                ['', undefined].includes(
+                                  checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name']) &&
                                 checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.value']!==''"
                             >
                               <el-card shadow="never">
@@ -282,13 +477,13 @@
                                   :data="checkedData['HTTPsampler.Arguments']['Arguments.arguments']"
                                   size="mini"
                                   style="width: 100%"
-                                  @selection-change="handleArgumentsSelectionChange"
                                   class="arguments-table"
+                                  @selection-change="handleArgumentsSelectionChange"
                                 >
                                   <el-table-column
                                     type="selection"
-                                    width="55">
-                                  </el-table-column>
+                                    width="55"
+                                  />
                                   <el-table-column
                                     prop="name"
                                     label="名称"
@@ -342,16 +537,16 @@
                                 <div style="margin: 20px; text-align: center">
                                   <el-button
                                     type="primary"
-                                    @click="handleArgumentsAdd(checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')"
                                     size="mini"
+                                    @click="handleArgumentsAdd(checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')"
                                   >
                                     添加
                                   </el-button>
                                   <el-button
                                     :disabled="argumentsSelection.length===0"
                                     type="primary"
-                                    @click="handleArgumentsDelete(checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')"
                                     size="mini"
+                                    @click="handleArgumentsDelete(checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')"
                                   >
                                     删除
                                   </el-button>
@@ -363,14 +558,15 @@
                               name="body"
                               :disabled="checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length > 1 ||
                                 (checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length===1 &&
-                                !['', undefined].includes(checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name']))"
+                                  !['', undefined].includes(
+                                    checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name']))"
                             >
                               <div v-if="checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length===1">
                                 <el-input
+                                  v-model="checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.value']"
                                   type="textarea"
                                   :autosize="{ minRows: 2, maxRows: 80}"
-                                  v-model="checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.value']">
-                                </el-input>
+                                />
                               </div>
                             </el-tab-pane>
                             <el-tab-pane label="文件上传" name="file">
@@ -380,13 +576,13 @@
                                     :data="checkedData['HTTPsampler.Files']['HTTPFileArgs.files']"
                                     size="mini"
                                     style="width: 100%"
-                                    @selection-change="handleArgumentsSelectionChange"
                                     class="arguments-table"
+                                    @selection-change="handleArgumentsSelectionChange"
                                   >
                                     <el-table-column
                                       type="selection"
-                                      width="55">
-                                    </el-table-column>
+                                      width="55"
+                                    />
                                     <el-table-column
                                       prop="path"
                                       label="文件名称"
@@ -423,16 +619,16 @@
                                 <div style="margin: 20px; text-align: center">
                                   <el-button
                                     type="primary"
-                                    @click="handleArgumentsAdd(checkedData['HTTPsampler.Files']['HTTPFileArgs.files'], 'HTTPFileArg')"
                                     size="mini"
+                                    @click="handleArgumentsAdd(checkedData['HTTPsampler.Files']['HTTPFileArgs.files'], 'HTTPFileArg')"
                                   >
                                     添加
                                   </el-button>
                                   <el-button
                                     :disabled="argumentsSelection.length===0"
                                     type="primary"
-                                    @click="handleArgumentsDelete(checkedData['HTTPsampler.Files']['HTTPFileArgs.files'], 'HTTPFileArg')"
                                     size="mini"
+                                    @click="handleArgumentsDelete(checkedData['HTTPsampler.Files']['HTTPFileArgs.files'], 'HTTPFileArg')"
                                   >
                                     删除
                                   </el-button>
@@ -451,13 +647,13 @@
                         :data="checkedData['HeaderManager.headers']"
                         size="mini"
                         style="width: 100%"
-                        @selection-change="handleArgumentsSelectionChange"
                         class="arguments-table"
+                        @selection-change="handleArgumentsSelectionChange"
                       >
                         <el-table-column
                           type="selection"
-                          width="55">
-                        </el-table-column>
+                          width="55"
+                        />
                         <el-table-column
                           prop="name"
                           label="名称"
@@ -475,23 +671,23 @@
                           label="值"
                         >
                           <template slot-scope="scope">
-                            <el-input v-model="scope.row['Header.value']" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row['Header.value']" placeholder="请输入内容"/>
                           </template>
                         </el-table-column>
                       </el-table>
                       <div style="margin: 20px; text-align: center">
                         <el-button
                           type="primary"
-                          @click="handleArgumentsAdd(checkedData['HeaderManager.headers'],'Header')"
                           size="mini"
+                          @click="handleArgumentsAdd(checkedData['HeaderManager.headers'],'Header')"
                         >
                           添加
                         </el-button>
                         <el-button
                           :disabled="argumentsSelection.length===0"
                           type="primary"
-                          @click="handleArgumentsDelete(checkedData['HeaderManager.headers'], 'Header')"
                           size="mini"
+                          @click="handleArgumentsDelete(checkedData['HeaderManager.headers'], 'Header')"
                         >
                           删除
                         </el-button>
@@ -505,13 +701,13 @@
                         :data="checkedData['Arguments.arguments']"
                         size="mini"
                         style="width: 100%"
-                        @selection-change="handleArgumentsSelectionChange"
                         class="arguments-table"
+                        @selection-change="handleArgumentsSelectionChange"
                       >
                         <el-table-column
                           type="selection"
-                          width="55">
-                        </el-table-column>
+                          width="55"
+                        />
                         <el-table-column
                           prop="name"
                           label="名称"
@@ -529,8 +725,10 @@
                           label="值"
                         >
                           <template slot-scope="scope">
-                            <el-input v-model="scope.row['Argument.value']"
-                                      placeholder="请输入内容"></el-input>
+                            <el-input
+                              v-model="scope.row['Argument.value']"
+                              placeholder="请输入内容"
+                            />
                           </template>
                         </el-table-column>
                         <el-table-column
@@ -538,7 +736,7 @@
                           label="描述"
                         >
                           <template slot-scope="scope">
-                            <el-input v-model="scope.row['Argument.desc']" placeholder="请输入内容"></el-input>
+                            <el-input v-model="scope.row['Argument.desc']" placeholder="请输入内容"/>
                           </template>
                         </el-table-column>
                       </el-table>
@@ -553,8 +751,8 @@
                         <el-button
                           :disabled="argumentsSelection.length===0"
                           type="primary"
-                          @click="handleArgumentsDelete(checkedData['Arguments.arguments'], 'Argument')"
                           size="mini"
+                          @click="handleArgumentsDelete(checkedData['Arguments.arguments'], 'Argument')"
                         >
                           删除
                         </el-button>
@@ -573,8 +771,9 @@
                                 {label:'Sub-samples only',value:'children' },
                                 {label:'JMeter variables Name to use',value:'variable'}
                               ]"
+                              :key="choice.value"
                               :label="choice.value"
-                              :key="choice.value">
+                            >
                               {{ choice.label }}
                             </el-radio>
                           </el-radio-group>
@@ -610,8 +809,8 @@
                           v-for="item in ['beanshell', 'bsh', 'groovy', 'java', 'jexl', 'jexl2']"
                           :key="item"
                           :label="item"
-                          :value="item">
-                        </el-option>
+                          :value="item"
+                        />
                       </el-select>
                     </el-form-item>
                     <el-form-item label="参数">
@@ -627,9 +826,9 @@
                       title="脚本"
                     >
                       <el-input
+                        v-model="checkedData.script"
                         type="textarea"
                         :autosize="{ minRows: 2, maxRows: 80}"
-                        v-model="checkedData.script"
                         style="margin-right: 20px"
                       />
                     </label-border>
@@ -641,8 +840,8 @@
                           v-for="item in [true, false]"
                           :key="item"
                           :label="item"
-                          :value="item">
-                        </el-option>
+                          :value="item"
+                        />
                       </el-select>
                     </el-form-item>
                     <el-form-item label="Jmeter变量">
@@ -651,8 +850,8 @@
                           v-for="item in [true, false]"
                           :key="item"
                           :label="item"
-                          :value="item">
-                        </el-option>
+                          :value="item"
+                        />
                       </el-select>
                     </el-form-item>
                     <el-form-item label="系统属性">
@@ -661,8 +860,8 @@
                           v-for="item in [true, false]"
                           :key="item"
                           :label="item"
-                          :value="item">
-                        </el-option>
+                          :value="item"
+                        />
                       </el-select>
                     </el-form-item>
                   </div>
@@ -681,49 +880,48 @@ import SplitPane from 'vue-splitpane'
 import labelBorder from './lable-border.vue'
 import {Jmx2Json, Json2Jmx} from './jmx'
 
-
 const AddContextMenuOptions = [
   {
     label: '线程（用户）',
     children: [
       {
         label: 'setUp线程组',
-        match: ['TestPlan'],
+        match: ['TestPlan']
       },
       {
         label: 'tearDown线程组',
-        match: ['TestPlan'],
+        match: ['TestPlan']
       },
       {
         label: '线程组',
-        match: ['TestPlan'],
-      },
-    ],
+        match: ['TestPlan']
+      }
+    ]
   },
   {
     label: '配置元件',
     children: [
       {
         label: 'CSV Data Set Config',
-        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
+        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy']
       },
       {
         label: 'HTTP信息头管理器',
-        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
+        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy']
       },
       {
         label: 'HTTP Cookie管理器',
-        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
+        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy']
       },
       {
         label: 'HTTP缓存管理器',
-        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
+        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy']
       },
       {
         label: 'HTTP请求默认值',
-        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy'],
+        match: ['TestPlan', 'ThreadGroup', 'HTTPSamplerProxy']
       }
-    ],
+    ]
   },
   {
     label: '监听器',
@@ -756,14 +954,15 @@ const AddContextMenuOptions = [
 export default {
   components: {
     SplitPane,
-    labelBorder,
+    labelBorder
   },
   data() {
     return {
+      isRunning: false,
       filterText: '',
       props: {
         label: (data) => {
-          return data['attributes']['testname'];
+          return data['attributes']['testname']
         },
         children: 'hashTree'
       },
@@ -785,11 +984,22 @@ export default {
         JSONPostProcessor: 'el-icon-document',
         DebugSampler: 'el-icon-edit',
         JSR223PreProcessor: 'el-icon-document',
-        ConfigTestElement: 'el-icon-s-operation',
+        ConfigTestElement: 'el-icon-s-operation'
       },
-
+      elementImages: {
+        TestPlan: require('@/assets/jmeter/tree/48x48/applications-science-3.png'),
+        ThreadGroup: require('@/assets/jmeter/tree/48x48/system-run-5.png'),
+        HTTPSamplerProxy: 'el-icon-edit',
+        HeaderManager: 'el-icon-s-operation',
+        ResultCollector: 'el-icon-view',
+        Arguments: 'el-icon-s-operation',
+        JSONPostProcessor: 'el-icon-document',
+        DebugSampler: 'el-icon-edit',
+        JSR223PreProcessor: 'el-icon-document',
+        ConfigTestElement: 'el-icon-s-operation'
+      },
       currentNode: null,
-      clipboard: null,
+      clipboard: null
 
     }
   },
@@ -797,6 +1007,9 @@ export default {
   computed: {
     activeName() {
       return this.checkedData['HTTPSampler.postBodyRaw'] ? 'body' : 'args'
+    },
+    treeNodeImage(elementType) {
+      return this.elementImages[elementType]
     }
   },
 
@@ -813,23 +1026,23 @@ export default {
     handleTabClick(tab) {
       switch (tab.name) {
         case 'body' :
-          this.checkedData['HTTPSampler.postBodyRaw'] = true;
+          this.checkedData['HTTPSampler.postBodyRaw'] = true
           if (this.checkedData['HTTPSampler.postBodyRaw'] &&
             this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length === 0) {
             this.handleArgumentsAdd(this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')
           }
-          break;
+          break
         case 'args':
-          this.checkedData['HTTPSampler.postBodyRaw'] = false;
-          break;
+          this.checkedData['HTTPSampler.postBodyRaw'] = false
+          break
         case 'file':
           if (!this.checkedData.hasOwnProperty('HTTPsampler.Files')) {
             this.$set(
               this.checkedData, 'HTTPsampler.Files', {
                 'HTTPFileArgs.files': [],
                 attributes: {
-                  name: "HTTPsampler.Files",
-                  elementType: "HTTPFileArgs"
+                  name: 'HTTPsampler.Files',
+                  elementType: 'HTTPFileArgs'
                 }
               }
             )
@@ -837,65 +1050,97 @@ export default {
       }
     },
 
+    changeNodeExpand(node, expanded) {
+      node.expanded = expanded
+      for (const child of node.childNodes) {
+        this.changeNodeExpand(child, expanded)
+      }
+    },
+
+    handleExpandAll() {
+      this.changeNodeExpand(this.$refs.veTree.store.root, true)
+    },
+
+    HandleCollapseAll() {
+      this.changeNodeExpand(this.$refs.veTree.store.root, false)
+    },
+
     filterTreeNode(value, data) {
       if (!value) return true
       return data.attributes.testname.indexOf(value) !== -1
     },
-    handleTreeNodeClick(data) {
+    handleTreeNodeClick(data, node) {
       console.log(data)
-      this.contextMenuVisible = false // todo: 点击tree并不会触发click事件
+      this.contextMenuVisible = false
       this.argumentsSelection = []
       this.checkedData = data
+      this.currentNode = node
     },
 
     filterOptions(options) {
-      let filteredOptions = []
-      for (let option of options) {
+      const filteredOptions = []
+      for (const option of options) {
         if (option.children !== undefined && option.children.length > 0) {
           option.children = this.filterOptions(option.children)
         }
-        if ((option.match !== undefined && option.match.includes(this.checkedData.attributes.testclass))
-          || (option.match === undefined && option.children.length > 0)) {
+        if ((option.match !== undefined && option.match.includes(this.checkedData.attributes.testclass)) ||
+          (option.match === undefined && option.children.length > 0)) {
           filteredOptions.push(option)
         }
       }
       return filteredOptions
     },
+    getElementImage(elementType) {
+      switch (elementType) {
+        case 'TestPlan':
+          return require('@/assets/jmeter/tree/48x48/applications-science-3.png')
+        case 'ThreadGroup':
+          return require('@/assets/jmeter/tree/48x48/system-run-5.png')
+        case 'HTTPSamplerProxy':
+          return require('@/assets/jmeter/tree/48x48/color-picker-grey.png')
+        case 'ResultCollector':
+          return require('@/assets/jmeter/tree/48x48/office-chart-area.png')
+        case 'ResponseAssertion':
+          return require('@/assets/jmeter/tree/48x48/document-preview.png')
+        case 'ConstantTimer':
+          return require('@/assets/jmeter/tree/48x48/appointment-new-3.png')
+      }
+    },
 
     handleTreeNodeRightClick(event, data, node) {
-      event.preventDefault();
-      this.currentNode = node;
-      this.checkedData = data;
+      event.preventDefault()
+      this.currentNode = node
+      this.checkedData = data
       this.contextMenuOptions = []
       let AddOptions = JSON.parse(JSON.stringify(AddContextMenuOptions))
       AddOptions = this.filterOptions(AddOptions)
       if (AddOptions.length > 0) {
         this.contextMenuOptions.push({
           label: '添加',
-          children: AddOptions,
+          children: AddOptions
         })
       }
       if (this.checkedData.attributes.guiclass === 'TestPlanGui') {
         this.contextMenuOptions.push({label: '粘贴'})
       } else {
         ['剪切', '复制', '粘贴', '复写', '删除'].forEach(item => this.contextMenuOptions.push({
-          label: item,
+          label: item
         }))
       }
-      this.contextMenuOptions.push.apply(this.contextMenuOptions, [{
+      this.contextMenuOptions.push(...[{
         label: '启用',
-        disabled: this.checkedData.attributes.enabled !== 'false',
+        disabled: this.checkedData.attributes.enabled !== 'false'
       }, {
         label: '禁用',
-        disabled: this.checkedData.attributes.enabled === 'false',
+        disabled: this.checkedData.attributes.enabled === 'false'
       }, {
-        label: '切换',
+        label: '切换'
       }])
-      this.contextMenuVisible = true;
+      this.contextMenuVisible = true
       const element = document.querySelector('.el-popover')
-      element.style.position = 'fixed';
-      element.style.left = `${event.clientX}px`;
-      element.style.top = `${event.clientY}px`;
+      element.style.position = 'fixed'
+      element.style.left = `${event.clientX}px`
+      element.style.top = `${event.clientY}px`
       document.addEventListener('click', (ev) => {
         if (ev.target !== element) {
           document.removeEventListener('click', undefined)
@@ -903,54 +1148,76 @@ export default {
         }
       })
     },
+
+    handleCut() {
+      if (this.currentNode !== null) {
+        const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id)
+        this.clipboard = this.currentNode.parent.data.hashTree.splice(index, 1)[0]
+        this.checkedData = this.treeData[0]
+        this.currentNode = null
+      }
+    },
+
+    handleCopy() {
+      if (this.currentNode !== null) {
+        this.clipboard = this.checkedData
+      }
+    },
+
+    handlePaste() {
+      if (this.clipboard !== null) {
+        this.checkedData.hashTree.push(this.clipboard)
+        this.currentNode.data.hashTree = JSON.parse(JSON.stringify(this.checkedData.hashTree))
+      }
+    },
+    handleDelete() {
+      if (this.currentNode !== null) {
+        const index = this.currentNode.parent.childNodes.findIndex(child => child.isCurrent)
+        this.currentNode.parent.data.hashTree.splice(index, 1)
+        this.checkedData = this.treeData[0]
+        this.currentNode = null
+      }
+    },
+    handleDuplicate() {
+      const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id)
+      this.currentNode.parent.data.hashTree.splice(index, 0, this.checkedData)
+      this.currentNode.parent.data.hashTree = JSON.parse(JSON.stringify(this.currentNode.parent.data.hashTree))
+    },
     handleContextMenuClick(value) {
       if (value.length > 0) {
-        this.$refs.contextMenu.clearCheckedNodes();
+        this.$refs.contextMenu.clearCheckedNodes()
       }
       this.contextMenuVisible = false
       switch (value[0]) {
         case '剪切':
-          if (this.currentNode !== null) {
-            const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id);
-            this.clipboard = this.currentNode.parent.data.hashTree.splice(index, 1)[0];
-            this.checkedData = this.treeData[0];
-            this.currentNode = null;
-          }
-          break;
+          this.handleCut()
+          break
         case '复制':
-          if (this.currentNode !== null) {
-            this.clipboard = this.checkedData;
-          }
-          break;
+          this.handleCopy()
+          break
         case '粘贴':
-          if (this.clipboard !== null) {
-            this.checkedData.hashTree.push(this.clipboard)
-            this.currentNode.data.hashTree = JSON.parse(JSON.stringify(this.checkedData.hashTree))
-          }
-          break;
+          this.handlePaste()
+          break
         case '复写':
-          const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id);
-          this.currentNode.parent.data.hashTree.splice(index, 0, this.checkedData)
-          this.currentNode.parent.data.hashTree = JSON.parse(JSON.stringify(this.currentNode.parent.data.hashTree))
-          break;
+          this.handleDuplicate()
+          break
         case '删除':
-          if (this.currentNode !== null) {
-            const index = this.currentNode.parent.childNodes.findIndex(child => child.isCurrent);
-            this.currentNode.parent.data.hashTree.splice(index, 1);
-            this.checkedData = this.treeData[0];
-            this.currentNode = null;
-          }
-          break;
+          this.handleDelete()
+          break
         case '启用':
         case '禁用':
         case '切换':
-          this.$set(this.checkedData.attributes, 'enabled', String(this.checkedData.attributes.enabled === 'false'))
-          break;
+          this.handleSwitch()
+          break
       }
     },
 
     handleArgumentsSelectionChange(val) {
-      this.argumentsSelection = val;
+      this.argumentsSelection = val
+    },
+
+    handleSwitch() {
+      this.$set(this.checkedData.attributes, 'enabled', String(this.checkedData.attributes.enabled === 'false'))
     },
 
     handleArgumentsAdd(src, elementType) {
@@ -960,35 +1227,35 @@ export default {
             'Header.name': '',
             'Header.value': '',
             attributes: {elementType: elementType, name: ''}
-          });
-          break;
+          })
+          break
         case 'Argument':
           src.push({
-            attributes: {name: "", elementType: "Argument"},
-            "Argument.name": "",
-            "Argument.value": "",
-            "Argument.metadata": "="
-          });
-          break;
+            attributes: {name: '', elementType: 'Argument'},
+            'Argument.name': '',
+            'Argument.value': '',
+            'Argument.metadata': '='
+          })
+          break
         case 'HTTPArgument':
           src.push({
-            "Argument.name": "",
-            "Argument.value": "",
-            "Argument.metadata": "=",
-            "HTTPArgument.always_encode": false,
-            "HTTPArgument.content_type": 'text/plain',
-            "HTTPArgument.use_equals": true,
+            'Argument.name': '',
+            'Argument.value': '',
+            'Argument.metadata': '=',
+            'HTTPArgument.always_encode': false,
+            'HTTPArgument.content_type': 'text/plain',
+            'HTTPArgument.use_equals': true,
             attributes: {name: '', elementType: elementType}
-          });
-          break;
+          })
+          break
         case 'HTTPFileArg':
           src.push({
             attributes: {
               name: '',
               elementType: 'HTTPFileArg'
             },
-            "File.mimetype": '',
-            "File.path": ''
+            'File.mimetype': '',
+            'File.path': ''
           })
       }
     },
@@ -1000,18 +1267,40 @@ export default {
       if (elementType === 'HTTPFileArg') {
         nameKey = 'File.path'
       }
-      for (let val of this.argumentsSelection) {
-        let index = src.findIndex(item => item[nameKey] === val[nameKey])
+      for (const val of this.argumentsSelection) {
+        const index = src.findIndex(item => item[nameKey] === val[nameKey])
         if (index !== -1) {
           src.splice(index, 1)
         }
       }
     },
 
+    onClickHelp() {
+      const componentReferenceUrl = 'https://jmeter.apache.org/usermanual/component_reference.html'
+      window.open(componentReferenceUrl, '_blank')
+    },
+    handleOpen() {
+      this.$refs.fileInput.click()
+    },
+    handleChange(event) {
+      if (event.target.files.length < 1) {
+        return false
+      }
+      const file = event.target.files[0]
+      const reader = new FileReader()
+      reader.onload = async () => {
+        const xmlData = reader.result
+        console.log('xmlData', xmlData)
+        this.treeData = Jmx2Json(xmlData)
+        console.log('treeData', this.treeData)
+      }
+      reader.readAsText(file)
+    },
     handleFileUpload(file) {
       const fileReader = new FileReader()
       fileReader.onload = async (e) => {
         const xmlData = e.target.result
+        console.log('xmlData', xmlData)
         this.treeData = Jmx2Json(xmlData)
         console.log(this.treeData)
       }
@@ -1028,22 +1317,50 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
+.toolbar {
+  height: 32px;
+  display: flex;
+  margin-bottom: 10px;
+
+  .toolbar-button {
+    height: 90%;
+    width: 32px;
+    display: flex;
+    padding: 1px !important;
+    align-items: center;
+    justify-content: center;
+
+    .toolbar-button-icon {
+      height: 100%;
+    }
+
+    .inactive {
+      filter: grayscale(100%);
+    }
+  }
+
+  .el-divider--vertical {
+    margin: 8px 8px;
+  }
+}
+
 .components-container {
   position: relative;
   height: calc(100vh - 50px);
 }
 
-.filter-input {
-  padding: 10px;
-}
-
-.filter-input >>> .el-input__inner {
-  border-radius: 30px;
-}
-
 .left-container {
   height: 100%;
+}
+
+.left-container >>> .el-tree {
+  margin-left: 0 !important;
+}
+
+.left-container >>> .el-cascader-menu__wrap {
+  height: auto !important;
 }
 
 .right-container {
@@ -1051,6 +1368,18 @@ export default {
   height: 100%;
   white-space: pre;
   overflow: auto;
+
+  .el-card {
+    background: #eeeeee;
+
+    .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+      background: #eeeeee;
+    }
+
+    .el-tabs__content {
+      background: #eeeeee;
+    }
+  }
 }
 
 .arguments-table >>> .el-input__inner {
@@ -1059,9 +1388,6 @@ export default {
   padding-left: 2px;
 }
 
-
-</style>
-<style>
 .el-cascader-menu__wrap {
   height: auto !important;
 }

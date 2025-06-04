@@ -1,7 +1,7 @@
 <template>
   <div class="label-border" :style="{paddingBottom: bottomPadding+'px'}">
     <span :style="{width: labelWidth+'px'}">{{ title }}</span>
-    <slot/>
+    <slot />
   </div>
 </template>
 <script>
@@ -31,16 +31,13 @@ export default {
     if (this.title) {
       for (let i = 0; i < this.title.length; i++) {
         if (this.title.charCodeAt(i) > 255) {
-          console.log(this.title.charCodeAt(i), 'chn')
           titleLength += 4 * 4;
         } else {
-          console.log(this.title.charCodeAt(i), 'en')
           titleLength += 3 * 4;
         }
       }
     }
     this.labelWidth = titleLength + 8
-    console.log(this.title, this.labelWidth)
   }
 
 }
@@ -62,7 +59,7 @@ export default {
     font-size: 16px;
     color: #606266;
     font-weight: 900;
-    background: #fff;
+    background: #eeeeee;
   }
 }
 </style>
