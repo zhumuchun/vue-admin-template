@@ -1,207 +1,36 @@
 <template>
   <div @click="handleToJmx">
     <div class="toolbar">
-      <el-tooltip effect="light" content="新建" placement="bottom-start" :open-delay="3000">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/document-new-4.png"
-            alt="新建"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="打开" placement="bottom-start" :open-delay="3000">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/document-open-2.png"
-            alt="打开"
-            class="toolbar-button-icon"
-            @click="handleOpen"
-          >
-          <input
-            ref="fileInput"
-            type="file"
-            style="display: none"
-            accept=".jmx"
-            @change="handleChange"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="保存" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/document-save-5.png"
-            alt="保存"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="另存为" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/document-save-as-5.png"
-            alt="另存为"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-divider direction="vertical"/>
-      <el-tooltip effect="light" content="剪切" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/edit-cut-4.png"
-            alt="剪切"
-            class="toolbar-button-icon"
-            @click="handleCut"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="复制" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/edit-copy-4.png"
-            alt="复制"
-            class="toolbar-button-icon"
-            @click="handleCopy"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="粘贴" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/edit-paste-4.png"
-            alt="粘贴"
-            class="toolbar-button-icon"
-            @click="handlePaste"
-          >
-        </button>
-      </el-tooltip>
-      <el-divider direction="vertical"/>
-      <el-tooltip effect="light" content="全部展开" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/list-add-3.png"
-            alt="全部展开"
-            class="toolbar-button-icon"
-            @click="handleExpandAll"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="全部折叠" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/list-remove-3.png"
-            alt="全部折叠"
-            class="toolbar-button-icon"
-            @click="HandleCollapseAll"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="切换" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/color-picker-toggle.png"
-            alt="切换"
-            class="toolbar-button-icon"
-            @click="handleSwitch"
-          >
-        </button>
-      </el-tooltip>
-      <el-divider direction="vertical"/>
-      <el-tooltip effect="light" content="启动" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/arrow-right-3.png"
-            alt="启动"
-            :class="{'toolbar-button-icon':true, 'inactive': isRunning}"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="不停顿启动" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/arrow-right-3-notimer.png"
-            alt="不停顿启动"
-            :class="{'toolbar-button-icon':true, 'inactive': isRunning}"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="停止" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/road-sign-us-stop.png"
-            alt="停止"
-            :class="{'toolbar-button-icon':true, 'inactive': !isRunning}"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="关闭" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/process-stop-4.png"
-            alt="关闭"
-            :class="{'toolbar-button-icon':true, 'inactive': !isRunning}"
-          >
-        </button>
-      </el-tooltip>
-      <el-divider direction="vertical"/>
-      <el-tooltip effect="light" content="清除" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/run-build-clean.png"
-            alt="清除"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="清除全部" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/run-build-prune.png"
-            alt="清除全部"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-divider direction="vertical"/>
-      <el-tooltip effect="light" content="查找" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/edit-find-7.png"
-            alt="查找"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="重置搜索" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/edit-clear-3.png"
-            alt="重置搜索"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-divider direction="vertical"/>
-      <el-tooltip effect="light" content="函数助手对话框" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/documentation.png"
-            alt="函数助手对话框"
-            class="toolbar-button-icon"
-          >
-        </button>
-      </el-tooltip>
-      <el-tooltip effect="light" content="帮助" placement="bottom-start">
-        <button class="toolbar-button">
-          <img
-            src="@/assets/jmeter/toolbar/48x48/help-contents-5.png"
-            alt="帮助"
-            class="toolbar-button-icon"
-            @click="onClickHelp"
-          >
-        </button>
-      </el-tooltip>
+      <div
+        v-for="(group,index) in toolbarGroups"
+        :key="index"
+        style="display: flex"
+      >
+        <div
+          v-for="item in group"
+          :key="item.content"
+          style="display: flex"
+        >
+          <el-tooltip effect="light" :content="item.content" placement="bottom-start" :open-delay="3000">
+            <button class="toolbar-button">
+              <img
+                :src="item.image"
+                :alt="item.content"
+                :class="{'toolbar-button-icon':true, 'inactive': item.inactive}"
+                @click="item.action"
+              >
+            </button>
+          </el-tooltip>
+        </div>
+        <el-divider v-if="index + 1 < toolbarGroups.length" direction="vertical"/>
+      </div>
+      <input
+        ref="fileInput"
+        type="file"
+        style="display: none"
+        accept=".jmx"
+        @change="handleChange"
+      >
     </div>
     <div class="components-container">
       <split-pane split="vertical" :default-percent="30">
@@ -209,7 +38,7 @@
           <div class="left-container">
             <div style="overflow: scroll;margin-bottom: 10px;height: 100%">
               <el-tree
-                ref="veTree"
+                ref="testplanTree"
                 node-key="id"
                 height="100%"
                 highlight-current
@@ -237,11 +66,10 @@
             </div>
           </div>
           <el-popover
-            v-model:visible="contextMenuVisible"
+            :value="contextMenuVisible"
             trigger="manual"
           >
             <el-cascader-panel
-              v-if="contextMenuVisible"
               ref="contextMenu"
               :options="contextMenuOptions"
               :props="{ expandTrigger: 'hover', value: 'label'}"
@@ -303,7 +131,7 @@
                         <el-button
                           type="primary"
                           size="mini"
-                          @click="handleArgumentsAdd(checkedData['TestPlan.user_defined_variables']['Arguments.arguments'], 'Argument')"
+                          @click="handleArgumentsAdd"
                         >
                           添加
                         </el-button>
@@ -311,7 +139,7 @@
                           :disabled="argumentsSelection.length===0"
                           type="primary"
                           size="mini"
-                          @click="handleArgumentsDelete(checkedData['TestPlan.user_defined_variables']['Arguments.arguments'], 'Argument')"
+                          @click="handleArgumentsDelete"
                         >
                           删除
                         </el-button>
@@ -459,6 +287,7 @@
                             与浏览器兼容的头
                           </el-checkbox>
                           <el-tabs
+                            ref="argumentsTab"
                             :value="activeName"
                             type="border-card"
                             style="border: 0; margin-top: 20px"
@@ -467,10 +296,7 @@
                             <el-tab-pane
                               label="参数"
                               name="args"
-                              :disabled="checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length===1 &&
-                                ['', undefined].includes(
-                                  checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name']) &&
-                                checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.value']!==''"
+                              :disabled="isArgTabDisabled"
                             >
                               <el-card shadow="never">
                                 <el-table
@@ -538,7 +364,7 @@
                                   <el-button
                                     type="primary"
                                     size="mini"
-                                    @click="handleArgumentsAdd(checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')"
+                                    @click="handleArgumentsAdd"
                                   >
                                     添加
                                   </el-button>
@@ -546,7 +372,7 @@
                                     :disabled="argumentsSelection.length===0"
                                     type="primary"
                                     size="mini"
-                                    @click="handleArgumentsDelete(checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')"
+                                    @click="handleArgumentsDelete"
                                   >
                                     删除
                                   </el-button>
@@ -556,10 +382,7 @@
                             <el-tab-pane
                               label="消息体数据"
                               name="body"
-                              :disabled="checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length > 1 ||
-                                (checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length===1 &&
-                                  !['', undefined].includes(
-                                    checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name']))"
+                              :disabled="isBodyTabDisabled"
                             >
                               <div v-if="checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length===1">
                                 <el-input
@@ -620,7 +443,7 @@
                                   <el-button
                                     type="primary"
                                     size="mini"
-                                    @click="handleArgumentsAdd(checkedData['HTTPsampler.Files']['HTTPFileArgs.files'], 'HTTPFileArg')"
+                                    @click="handleArgumentsAdd"
                                   >
                                     添加
                                   </el-button>
@@ -628,7 +451,7 @@
                                     :disabled="argumentsSelection.length===0"
                                     type="primary"
                                     size="mini"
-                                    @click="handleArgumentsDelete(checkedData['HTTPsampler.Files']['HTTPFileArgs.files'], 'HTTPFileArg')"
+                                    @click="handleArgumentsDelete"
                                   >
                                     删除
                                   </el-button>
@@ -679,7 +502,7 @@
                         <el-button
                           type="primary"
                           size="mini"
-                          @click="handleArgumentsAdd(checkedData['HeaderManager.headers'],'Header')"
+                          @click="handleArgumentsAdd"
                         >
                           添加
                         </el-button>
@@ -687,7 +510,7 @@
                           :disabled="argumentsSelection.length===0"
                           type="primary"
                           size="mini"
-                          @click="handleArgumentsDelete(checkedData['HeaderManager.headers'], 'Header')"
+                          @click="handleArgumentsDelete"
                         >
                           删除
                         </el-button>
@@ -744,7 +567,7 @@
                         <el-button
                           type="primary"
                           size="mini"
-                          @click="handleArgumentsAdd(checkedData['Arguments.arguments'], 'Argument')"
+                          @click="handleArgumentsAdd"
                         >
                           添加
                         </el-button>
@@ -752,7 +575,7 @@
                           :disabled="argumentsSelection.length===0"
                           type="primary"
                           size="mini"
-                          @click="handleArgumentsDelete(checkedData['Arguments.arguments'], 'Argument')"
+                          @click="handleArgumentsDelete"
                         >
                           删除
                         </el-button>
@@ -999,8 +822,146 @@ export default {
         ConfigTestElement: 'el-icon-s-operation'
       },
       currentNode: null,
-      clipboard: null
+      clipboard: null,
 
+      toolbarGroups: [
+        [
+          {
+            content: '新建',
+            image: require('@/assets/jmeter/toolbar/48x48/document-new-4.png'),
+            action: this.handleOpen,
+            inactive: false
+          },
+          {
+            content: '打开',
+            image: require('@/assets/jmeter/toolbar/48x48/document-open-2.png'),
+            action: this.handleOpen,
+            inactive: false
+          },
+          {
+            content: '保存',
+            image: require('@/assets/jmeter/toolbar/48x48/document-save-5.png'),
+            action: this.handleOpen,
+            active: true,
+            inactive: false
+          },
+          {
+            content: '另存为',
+            image: require('@/assets/jmeter/toolbar/48x48/document-save-as-5.png'),
+            action: this.handleOpen,
+            active: true,
+            inactive: false
+          }
+        ],
+        [
+          {
+            content: '剪切',
+            image: require('@/assets/jmeter/toolbar/48x48/edit-cut-4.png'),
+            action: this.handleCut,
+            inactive: false
+          },
+          {
+            content: '复制',
+            image: require('@/assets/jmeter/toolbar/48x48/edit-copy-4.png'),
+            action: this.handleCopy,
+            inactive: false
+          },
+          {
+            content: '粘贴',
+            image: require('@/assets/jmeter/toolbar/48x48/edit-paste-4.png'),
+            action: this.handlePaste,
+            inactive: false
+          }
+        ],
+        [
+          {
+            content: '全部展开',
+            image: require('@/assets/jmeter/toolbar/48x48/list-add-3.png'),
+            action: this.handleExpandAll,
+            inactive: false
+          },
+          {
+            content: '全部折叠',
+            image: require('@/assets/jmeter/toolbar/48x48/list-remove-3.png'),
+            action: this.handleCollapseAll,
+            inactive: false
+          },
+          {
+            content: '切换',
+            image: require('@/assets/jmeter/toolbar/48x48/color-picker-toggle.png'),
+            action: this.handleSwitch,
+            inactive: false
+          }
+        ],
+        [
+          {
+            content: '启动',
+            image: require('@/assets/jmeter/toolbar/48x48/arrow-right-3.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          },
+          {
+            content: '不停顿启动',
+            image: require('@/assets/jmeter/toolbar/48x48/arrow-right-3-notimer.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          },
+          {
+            content: '停止',
+            image: require('@/assets/jmeter/toolbar/48x48/road-sign-us-stop.png'),
+            action: this.handleExpandAll,
+            inactive: !this.isRunning
+          },
+          {
+            content: '关闭',
+            image: require('@/assets/jmeter/toolbar/48x48/process-stop-4.png'),
+            action: this.handleExpandAll,
+            inactive: !this.isRunning
+          }
+        ],
+        [
+          {
+            content: '清除',
+            image: require('@/assets/jmeter/toolbar/48x48/run-build-clean.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          },
+          {
+            content: '清除全部',
+            image: require('@/assets/jmeter/toolbar/48x48/run-build-prune.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          }
+        ],
+        [
+          {
+            content: '查找',
+            image: require('@/assets/jmeter/toolbar/48x48/run-build-clean.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          },
+          {
+            content: '重置搜索',
+            image: require('@/assets/jmeter/toolbar/48x48/edit-clear-3.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          }
+        ],
+        [
+          {
+            content: '函数助手对话框',
+            image: require('@/assets/jmeter/toolbar/48x48/documentation.png'),
+            action: this.handleExpandAll,
+            inactive: this.isRunning
+          },
+          {
+            content: '帮助',
+            image: require('@/assets/jmeter/toolbar/48x48/help-contents-5.png'),
+            action: this.onClickHelp,
+            inactive: this.isRunning
+          }
+        ]
+      ]
     }
   },
 
@@ -1008,14 +969,17 @@ export default {
     activeName() {
       return this.checkedData['HTTPSampler.postBodyRaw'] ? 'body' : 'args'
     },
-    treeNodeImage(elementType) {
-      return this.elementImages[elementType]
-    }
-  },
-
-  watch: {
-    filterText(val) {
-      this.$refs.veTree.filter(val)
+    isArgTabDisabled() {
+      return this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length === 1 &&
+        !this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name'] &&
+        Boolean(this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.value'])
+    },
+    isBodyTabDisabled() {
+      return this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length > 1 ||
+        (
+          this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length === 1 &&
+          Boolean(this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name'])
+        )
     }
   },
 
@@ -1027,9 +991,11 @@ export default {
       switch (tab.name) {
         case 'body' :
           this.checkedData['HTTPSampler.postBodyRaw'] = true
-          if (this.checkedData['HTTPSampler.postBodyRaw'] &&
-            this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length === 0) {
-            this.handleArgumentsAdd(this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'], 'HTTPArgument')
+          if (
+            this.checkedData['HTTPSampler.postBodyRaw'] &&
+            this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].length === 0
+          ) {
+            this.handleArgumentsAdd()
           }
           break
         case 'args':
@@ -1058,11 +1024,11 @@ export default {
     },
 
     handleExpandAll() {
-      this.changeNodeExpand(this.$refs.veTree.store.root, true)
+      this.changeNodeExpand(this.$refs.testplanTree.store.root, true)
     },
 
-    HandleCollapseAll() {
-      this.changeNodeExpand(this.$refs.veTree.store.root, false)
+    handleCollapseAll() {
+      this.changeNodeExpand(this.$refs.testplanTree.store.root, false)
     },
 
     filterTreeNode(value, data) {
@@ -1220,55 +1186,82 @@ export default {
       this.$set(this.checkedData.attributes, 'enabled', String(this.checkedData.attributes.enabled === 'false'))
     },
 
-    handleArgumentsAdd(src, elementType) {
-      switch (elementType) {
-        case 'Header':
-          src.push({
-            'Header.name': '',
-            'Header.value': '',
-            attributes: {elementType: elementType, name: ''}
-          })
-          break
-        case 'Argument':
-          src.push({
+    handleArgumentsAdd() {
+      switch (this.checkedData.attributes.guiclass) {
+        case 'TestPlanGui':
+          this.checkedData['TestPlan.user_defined_variables']['Arguments.arguments'].push({
             attributes: {name: '', elementType: 'Argument'},
             'Argument.name': '',
             'Argument.value': '',
             'Argument.metadata': '='
           })
           break
-        case 'HTTPArgument':
-          src.push({
-            'Argument.name': '',
-            'Argument.value': '',
-            'Argument.metadata': '=',
-            'HTTPArgument.always_encode': false,
-            'HTTPArgument.content_type': 'text/plain',
-            'HTTPArgument.use_equals': true,
-            attributes: {name: '', elementType: elementType}
+        case 'HeaderPanel':
+          this.checkedData['HeaderManager.headers'].push({
+            'Header.name': '',
+            'Header.value': '',
+            attributes: {elementType: 'Header', name: ''}
           })
           break
-        case 'HTTPFileArg':
-          src.push({
-            attributes: {
-              name: '',
-              elementType: 'HTTPFileArg'
-            },
-            'File.mimetype': '',
-            'File.path': ''
+        case 'ArgumentsPanel':
+          this.checkedData['Arguments.arguments'].push({
+            attributes: {name: '', elementType: 'Argument'},
+            'Argument.name': '',
+            'Argument.value': '',
+            'Argument.metadata': '='
           })
+          break
+        case 'HttpTestSampleGui':
+        case 'HttpDefaultsGui':
+          if (this.$refs.argumentsTab.currentName === 'args') {
+            this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'].push({
+              'Argument.name': '',
+              'Argument.value': '',
+              'Argument.metadata': '=',
+              'HTTPArgument.always_encode': false,
+              'HTTPArgument.content_type': 'text/plain',
+              'HTTPArgument.use_equals': true,
+              attributes: {name: '', elementType: 'HTTPArgument'}
+            })
+          } else {
+            this.checkedData['HTTPsampler.Files']['HTTPFileArgs.files'].push({
+              attributes: {
+                name: '',
+                elementType: 'HTTPFileArg',
+              },
+              'File.mimetype': '',
+              'File.path': ''
+            })
+          }
+          break
       }
     },
-    handleArgumentsDelete(src, elementType) {
+    handleArgumentsDelete() {
       let nameKey = 'Argument.name'
-      if (elementType === 'Header') {
-        nameKey = 'Header.name'
+      let src
+      switch (this.checkedData.attributes.guiclass) {
+        case 'TestPlanGui':
+          src = this.checkedData['TestPlan.user_defined_variables']['Arguments.arguments']
+          break
+        case 'HeaderPanel':
+          src = this.checkedData['HeaderManager.headers']
+          nameKey = 'Header.name'
+          break
+        case 'ArgumentsPanel':
+          src = this.checkedData['Arguments.arguments']
+          break
+        case 'HttpTestSampleGui':
+        case 'HttpDefaultsGui':
+          if (this.$refs.argumentsTab.currentName === 'args') {
+            src = this.checkedData['HTTPsampler.Arguments']['Arguments.arguments']
+          } else {
+            src = this.checkedData['HTTPsampler.Files']['HTTPFileArgs.files']
+            nameKey = 'File.path'
+          }
+          break
       }
-      if (elementType === 'HTTPFileArg') {
-        nameKey = 'File.path'
-      }
-      for (const val of this.argumentsSelection) {
-        const index = src.findIndex(item => item[nameKey] === val[nameKey])
+      for (const arg of this.argumentsSelection) {
+        const index = src.findIndex(item => item[nameKey] === arg[nameKey])
         if (index !== -1) {
           src.splice(index, 1)
         }
@@ -1276,8 +1269,7 @@ export default {
     },
 
     onClickHelp() {
-      const componentReferenceUrl = 'https://jmeter.apache.org/usermanual/component_reference.html'
-      window.open(componentReferenceUrl, '_blank')
+      window.open('https://jmeter.apache.org/usermanual/component_reference.html', '_blank')
     },
     handleOpen() {
       this.$refs.fileInput.click()
@@ -1296,17 +1288,6 @@ export default {
       }
       reader.readAsText(file)
     },
-    handleFileUpload(file) {
-      const fileReader = new FileReader()
-      fileReader.onload = async (e) => {
-        const xmlData = e.target.result
-        console.log('xmlData', xmlData)
-        this.treeData = Jmx2Json(xmlData)
-        console.log(this.treeData)
-      }
-      fileReader.readAsText(file.raw)
-    },
-
     handleToJmx() {
       if (this.treeData.length > 0) {
         const xml = Json2Jmx(this.treeData)
@@ -1317,7 +1298,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .toolbar {
   height: 32px;
@@ -1349,6 +1330,10 @@ export default {
 .components-container {
   position: relative;
   height: calc(100vh - 50px);
+
+  .el-cascader-menu__wrap {
+    height: auto !important;
+  }
 }
 
 .left-container {
@@ -1357,10 +1342,6 @@ export default {
 
 .left-container >>> .el-tree {
   margin-left: 0 !important;
-}
-
-.left-container >>> .el-cascader-menu__wrap {
-  height: auto !important;
 }
 
 .right-container {
@@ -1388,7 +1369,4 @@ export default {
   padding-left: 2px;
 }
 
-.el-cascader-menu__wrap {
-  height: auto !important;
-}
 </style>
