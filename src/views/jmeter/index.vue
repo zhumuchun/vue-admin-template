@@ -1042,6 +1042,10 @@ export default {
     },
     handleTreeNodeClick(data, node) {
       console.log(data)
+      // 适配右击时选中node
+      if (this.currentNode !== null) {
+        this.currentNode.isCurrent = false
+      }
       this.contextMenuVisible = false
       this.argumentsSelection = []
       this.checkedData = data
@@ -1089,6 +1093,10 @@ export default {
 
     handleTreeNodeRightClick(event, data, node) {
       event.preventDefault()
+      if (this.currentNode !== null) {
+        this.currentNode.isCurrent = false
+      }
+      node.isCurrent = true
       this.currentNode = node
       this.checkedData = data
       this.contextMenuOptions = []
