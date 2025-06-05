@@ -1349,6 +1349,10 @@ export default {
   .el-cascader-menu__wrap {
     height: auto !important;
   }
+
+  .el-divider--horizontal {
+    margin: 0 !important;
+  }
 }
 
 .left-container {
