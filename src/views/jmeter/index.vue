@@ -75,7 +75,12 @@
               :props="{ expandTrigger: 'hover', value: 'label'}"
               style="border: 0"
               @change="handleContextMenuClick"
-            />
+            >
+              <template slot-scope="{ node, data }">
+                <span>{{ data.label }}</span>
+                <el-divider v-if="data.divide"/>
+              </template>
+            </el-cascader-panel>
           </el-popover>
         </template>
         <template slot="paneR">
@@ -1085,15 +1090,23 @@ export default {
       if (AddOptions.length > 0) {
         this.contextMenuOptions.push({
           label: '添加',
-          children: AddOptions
+          children: AddOptions,
+          divide: true
         })
       }
       if (this.checkedData.attributes.guiclass === 'TestPlanGui') {
-        this.contextMenuOptions.push({label: '粘贴'})
+        this.contextMenuOptions.push({
+          label: '粘贴',
+          divide: true
+        })
       } else {
-        ['剪切', '复制', '粘贴', '复写', '删除'].forEach(item => this.contextMenuOptions.push({
-          label: item
+        ['剪切', '复制', '粘贴', '复写'].forEach(item => this.contextMenuOptions.push({
+          label: item,
         }))
+        this.contextMenuOptions.push({
+          label: '删除',
+          divide: true
+        })
       }
       this.contextMenuOptions.push(...[{
         label: '启用',
@@ -1102,7 +1115,7 @@ export default {
         label: '禁用',
         disabled: this.checkedData.attributes.enabled === 'false'
       }, {
-        label: '切换'
+        label: '切换',
       }])
       this.contextMenuVisible = true
       const element = document.querySelector('.el-popover')
