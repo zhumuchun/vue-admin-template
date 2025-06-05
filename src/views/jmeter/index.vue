@@ -38,7 +38,7 @@
           <div class="left-container">
             <div style="overflow: scroll;margin-bottom: 10px;height: 100%">
               <el-tree
-                ref="testplanTree"
+                ref="testPlanTree"
                 node-key="id"
                 height="100%"
                 highlight-current
@@ -1024,11 +1024,11 @@ export default {
     },
 
     handleExpandAll() {
-      this.changeNodeExpand(this.$refs.testplanTree.store.root, true)
+      this.changeNodeExpand(this.$refs.testPlanTree.store.root, true)
     },
 
     handleCollapseAll() {
-      this.changeNodeExpand(this.$refs.testplanTree.store.root, false)
+      this.changeNodeExpand(this.$refs.testPlanTree.store.root, false)
     },
 
     filterTreeNode(value, data) {
@@ -1063,6 +1063,8 @@ export default {
         case 'ThreadGroup':
           return require('@/assets/jmeter/tree/48x48/system-run-5.png')
         case 'HTTPSamplerProxy':
+        case 'JSR223Sampler':
+        case 'DebugSampler':
           return require('@/assets/jmeter/tree/48x48/color-picker-grey.png')
         case 'ResultCollector':
           return require('@/assets/jmeter/tree/48x48/office-chart-area.png')
