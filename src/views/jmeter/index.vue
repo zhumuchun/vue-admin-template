@@ -1061,8 +1061,8 @@ export default {
       }
       return filteredOptions
     },
-    getElementImage(elementType) {
-      switch (elementType) {
+    getElementImage(testClass) {
+      switch (testClass) {
         case 'TestPlan':
           return require('@/assets/jmeter/tree/48x48/applications-science-3.png')
         case 'ThreadGroup':
@@ -1074,9 +1074,16 @@ export default {
         case 'ResultCollector':
           return require('@/assets/jmeter/tree/48x48/office-chart-area.png')
         case 'ResponseAssertion':
+        case 'JSR223Assertion':
           return require('@/assets/jmeter/tree/48x48/document-preview.png')
         case 'ConstantTimer':
           return require('@/assets/jmeter/tree/48x48/appointment-new-3.png')
+        case 'HeaderManager':
+          return require('@/assets/jmeter/tree/48x48/preferences-system-4.png')
+        case 'JSR223PreProcessor':
+          return require('@/assets/jmeter/tree/48x48/document-import-2_custom.png')
+        case 'RegexExtractor':
+          return require('@/assets/jmeter/tree/48x48/document-export-4_custom.png')
       }
     },
 
