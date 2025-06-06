@@ -45,8 +45,8 @@
                 :draggable="true"
                 :expand-on-click-node="false"
                 :filter-node-method="filterTreeNode"
-                :data="treeData"
-                :props="props"
+                :data="testPlanData"
+                :props="testPlanTreeProps"
                 style="margin-left: 10px"
                 @node-click="handleTreeNodeClick"
                 @node-contextmenu="handleTreeNodeRightClick"
@@ -786,49 +786,6 @@ export default {
   },
   data() {
     return {
-      isRunning: false,
-      filterText: '',
-      props: {
-        label: (data) => {
-          return data['attributes']['testname']
-        },
-        children: 'hashTree'
-      },
-      treeData: [],
-      checkedData: {
-        attributes: {}
-      },
-      argumentsSelection: [],
-      contextMenuVisible: false,
-      contextMenuOptions: [],
-
-      elementIcons: {
-        TestPlan: 'el-icon-edit-outline',
-        ThreadGroup: 'el-icon-setting',
-        HTTPSamplerProxy: 'el-icon-edit',
-        HeaderManager: 'el-icon-s-operation',
-        ResultCollector: 'el-icon-view',
-        Arguments: 'el-icon-s-operation',
-        JSONPostProcessor: 'el-icon-document',
-        DebugSampler: 'el-icon-edit',
-        JSR223PreProcessor: 'el-icon-document',
-        ConfigTestElement: 'el-icon-s-operation'
-      },
-      elementImages: {
-        TestPlan: require('@/assets/jmeter/tree/48x48/applications-science-3.png'),
-        ThreadGroup: require('@/assets/jmeter/tree/48x48/system-run-5.png'),
-        HTTPSamplerProxy: 'el-icon-edit',
-        HeaderManager: 'el-icon-s-operation',
-        ResultCollector: 'el-icon-view',
-        Arguments: 'el-icon-s-operation',
-        JSONPostProcessor: 'el-icon-document',
-        DebugSampler: 'el-icon-edit',
-        JSR223PreProcessor: 'el-icon-document',
-        ConfigTestElement: 'el-icon-s-operation'
-      },
-      currentNode: null,
-      clipboard: null,
-
       toolbarGroups: [
         [
           {
@@ -966,7 +923,23 @@ export default {
             inactive: this.isRunning
           }
         ]
-      ]
+      ],
+      isRunning: false,
+      testPlanData: [],
+      testPlanTreeProps: {
+        label: (data) => {
+          return data['attributes']['testname']
+        },
+        children: 'hashTree'
+      },
+      checkedData: {
+        attributes: {}
+      },
+      currentNode: null,
+      clipboard: null,
+      argumentsSelection: [],
+      contextMenuVisible: false,
+      contextMenuOptions: [],
     }
   },
 
@@ -986,9 +959,6 @@ export default {
           Boolean(this.checkedData['HTTPsampler.Arguments']['Arguments.arguments'][0]['Argument.name'])
         )
     }
-  },
-
-  created() {
   },
 
   methods: {
@@ -1149,7 +1119,7 @@ export default {
       if (this.currentNode !== null) {
         const index = this.currentNode.parent.childNodes.findIndex(child => child.id === this.currentNode.id)
         this.clipboard = this.currentNode.parent.data.hashTree.splice(index, 1)[0]
-        this.checkedData = this.treeData[0]
+        this.checkedData = this.testPlanData[0]
         this.currentNode = null
       }
     },
@@ -1170,7 +1140,7 @@ export default {
       if (this.currentNode !== null) {
         const index = this.currentNode.parent.childNodes.findIndex(child => child.isCurrent)
         this.currentNode.parent.data.hashTree.splice(index, 1)
-        this.checkedData = this.treeData[0]
+        this.checkedData = this.testPlanData[0]
         this.currentNode = null
       }
     },
@@ -1313,14 +1283,14 @@ export default {
       reader.onload = async () => {
         const xmlData = reader.result
         console.log('xmlData', xmlData)
-        this.treeData = Jmx2Json(xmlData)
-        console.log('treeData', this.treeData)
+        this.testPlanData = Jmx2Json(xmlData)
+        console.log('treeData', this.testPlanData)
       }
       reader.readAsText(file)
     },
     handleToJmx() {
-      if (this.treeData.length > 0) {
-        const xml = Json2Jmx(this.treeData)
+      if (this.testPlanData.length > 0) {
+        const xml = Json2Jmx(this.testPlanData)
         console.log(xml)
       }
     }
