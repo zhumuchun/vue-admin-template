@@ -99,6 +99,7 @@
                     <el-card shadow="never">
                       <el-table
                         :data="checkedData['TestPlan.user_defined_variables']['Arguments.arguments']"
+                        border
                         size="mini"
                         style="width: 100%"
                         class="arguments-table"
@@ -306,6 +307,7 @@
                               <el-card shadow="never">
                                 <el-table
                                   :data="checkedData['HTTPsampler.Arguments']['Arguments.arguments']"
+                                  border
                                   size="mini"
                                   style="width: 100%"
                                   class="arguments-table"
@@ -402,6 +404,7 @@
                                 <div v-if="checkedData['HTTPsampler.Files'] !== undefined">
                                   <el-table
                                     :data="checkedData['HTTPsampler.Files']['HTTPFileArgs.files']"
+                                    border
                                     size="mini"
                                     style="width: 100%"
                                     class="arguments-table"
@@ -473,6 +476,7 @@
                     <label-border title="信息头存储在信息头管理器中">
                       <el-table
                         :data="checkedData['HeaderManager.headers']"
+                        border
                         size="mini"
                         style="width: 100%"
                         class="arguments-table"
@@ -527,6 +531,7 @@
                     <el-card shadow="never">
                       <el-table
                         :data="checkedData['Arguments.arguments']"
+                        border
                         size="mini"
                         style="width: 100%"
                         class="arguments-table"
@@ -630,7 +635,7 @@
                       <el-input v-model="checkedData['JSONPostProcessor.defaultValues']"/>
                     </el-form-item>
                   </div>
-                  <div v-if="checkedData.attributes.testclass==='JSR223PreProcessor'">
+                  <div v-if="['JSR223PostProcessor','JSR223Sampler', 'JSR223PreProcessor'].includes(checkedData.attributes.testclass)">
                     <el-form-item label="语言">
                       <el-select v-model="checkedData.scriptLanguage">
                         <el-option
@@ -656,7 +661,7 @@
                       <el-input
                         v-model="checkedData.script"
                         type="textarea"
-                        :autosize="{ minRows: 2, maxRows: 80}"
+                        :autosize="{ minRows: 16, maxRows: 80}"
                         style="margin-right: 20px"
                       />
                     </label-border>
@@ -1053,10 +1058,12 @@ export default {
         case 'ConstantTimer':
           return require('@/assets/jmeter/tree/48x48/appointment-new-3.png')
         case 'HeaderManager':
+        case 'Arguments':
           return require('@/assets/jmeter/tree/48x48/preferences-system-4.png')
         case 'JSR223PreProcessor':
           return require('@/assets/jmeter/tree/48x48/document-import-2_custom.png')
         case 'RegexExtractor':
+        case 'JSR223PostProcessor':
           return require('@/assets/jmeter/tree/48x48/document-export-4_custom.png')
       }
     },
@@ -1354,6 +1361,18 @@ export default {
   white-space: pre;
   overflow: auto;
 
+  .el-input__inner {
+    border: 0 !important;
+    box-shadow: none !important;
+    padding-left: 0;
+    border-radius: 0;
+  }
+  .el-checkbox__inner {
+    border-radius: 0;
+  }
+  .el-button--mini {
+    border-radius: 0;
+  }
   .el-card {
     background: #eeeeee;
 
@@ -1365,12 +1384,6 @@ export default {
       background: #eeeeee;
     }
   }
-}
-
-.arguments-table >>> .el-input__inner {
-  border: 0 !important;
-  box-shadow: none !important;
-  padding-left: 2px;
 }
 
 </style>
