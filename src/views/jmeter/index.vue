@@ -1045,9 +1045,12 @@ export default {
         case 'TestPlan':
           return require('@/assets/jmeter/tree/48x48/applications-science-3.png')
         case 'ThreadGroup':
+        case 'SetupThreadGroup':
+        case 'PostThreadGroup':
           return require('@/assets/jmeter/tree/48x48/system-run-5.png')
         case 'HTTPSamplerProxy':
         case 'JSR223Sampler':
+        case 'JDBCSampler':
         case 'DebugSampler':
           return require('@/assets/jmeter/tree/48x48/color-picker-grey.png')
         case 'ResultCollector':
@@ -1059,12 +1062,16 @@ export default {
           return require('@/assets/jmeter/tree/48x48/appointment-new-3.png')
         case 'HeaderManager':
         case 'Arguments':
+        case 'JDBCDataSource':
+        case 'ConfigTestElement':
           return require('@/assets/jmeter/tree/48x48/preferences-system-4.png')
         case 'JSR223PreProcessor':
           return require('@/assets/jmeter/tree/48x48/document-import-2_custom.png')
         case 'RegexExtractor':
         case 'JSR223PostProcessor':
           return require('@/assets/jmeter/tree/48x48/document-export-4_custom.png')
+        case 'TransactionController':
+          return require('@/assets/jmeter/tree/48x48/view-list-tree-4.png')
       }
     },
 
@@ -1348,7 +1355,7 @@ export default {
 }
 
 .left-container {
-  height: 100%;
+  height: auto;
 }
 
 .left-container >>> .el-tree {
@@ -1357,7 +1364,7 @@ export default {
 
 .right-container {
   background-color: #efefef;
-  height: 100%;
+  height: auto;
   white-space: pre;
   overflow: auto;
 
