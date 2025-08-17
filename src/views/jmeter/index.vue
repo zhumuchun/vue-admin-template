@@ -1,5 +1,5 @@
 <template>
-  <div @click="handleToJmx">
+  <div>
     <div class="toolbar">
       <div
         v-for="(group,index) in toolbarGroups"
@@ -796,7 +796,7 @@ export default {
           {
             content: '新建',
             image: require('@/assets/jmeter/toolbar/48x48/document-new-4.png'),
-            action: this.handleOpen,
+            action: this.handleNew,
             inactive: false
           },
           {
@@ -808,14 +808,14 @@ export default {
           {
             content: '保存',
             image: require('@/assets/jmeter/toolbar/48x48/document-save-5.png'),
-            action: this.handleOpen,
+            action: this.handleSave,
             active: true,
             inactive: false
           },
           {
             content: '另存为',
             image: require('@/assets/jmeter/toolbar/48x48/document-save-as-5.png'),
-            action: this.handleOpen,
+            action: this.handleSaveAs,
             active: true,
             inactive: false
           }
@@ -1285,6 +1285,19 @@ export default {
     onClickHelp() {
       window.open('https://jmeter.apache.org/usermanual/component_reference.html', '_blank')
     },
+    handleNew() {
+      this.testPlanData = Jmx2Json(`<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="测试计划">
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+    </TestPlan>
+    <hashTree/>
+  </hashTree>
+</jmeterTestPlan>`)
+    },
     handleOpen() {
       this.$refs.fileInput.click()
     },
@@ -1302,11 +1315,14 @@ export default {
       }
       reader.readAsText(file)
     },
-    handleToJmx() {
+    handleSave() {
       if (this.testPlanData.length > 0) {
         const xml = Json2Jmx(this.testPlanData)
         console.log(xml)
       }
+    },
+    handleSaveAs() {
+      this.handleSave()
     }
   }
 }
