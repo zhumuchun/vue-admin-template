@@ -57,9 +57,9 @@ export function Jmx2Json(JmxContent) {
   try {
     const parser = new DOMParser()
     const xmlDoc = parser.parseFromString(JmxContent, 'application/xml')
-    console.log('load jmx success:', xmlDoc);
-    let testPlan = []
-    xml2json(testPlan, xmlDoc.getElementsByTagName('TestPlan')[0].parentNode.children, false)
+    console.log('load jmx success:', xmlDoc)
+    const testPlan = []
+    xml2json(testPlan, xmlDoc.getElementsByTagName('TestPlan')[0].parentNode.children)
     return testPlan
   } catch (err) {
     console.log(`load jmx error:`, err.stack)
